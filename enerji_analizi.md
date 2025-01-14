@@ -110,6 +110,50 @@ Türkiye'nin diğer büyük ekonomilerle karşılaştırması:
 
 ## İstatistiksel Analizler
 
+### Hipotez Testleri
+
+Türkiye'nin enerji verileri üzerinde beş temel hipotez test edilmiştir:
+
+#### 1. Yıllık Artış Hipotezi
+**H0**: Enerji arzında yıllık artış yok (β = 0)  
+**H1**: Anlamlı bir artış var (β > 0)
+
+- t-değeri ve p-değeri analizi
+- R-kare değeri ile açıklanan varyans
+- **Sonuç**: Yıllık artış istatistiksel olarak anlamlıdır (p < 0.05)
+
+#### 2. Model Karşılaştırması
+**H0**: Doğrusal model yeterlidir  
+**H1**: Polinom model daha iyidir
+
+- ANOVA testi sonuçları
+- Model karşılaştırma metrikleri
+- **Sonuç**: Polinom model daha iyi performans göstermektedir
+
+#### 3. Trend Analizi
+**H0**: Zaman serisinde trend yok  
+**H1**: Anlamlı bir trend var
+
+- Ljung-Box testi sonuçları
+- Trend bileşeni analizi
+- **Sonuç**: Veriler güçlü bir trend içermektedir
+
+#### 4. Mevsimsellik Testi
+**H0**: Mevsimsellik etkisi yok  
+**H1**: Mevsimsel etki var
+
+- Friedman testi sonuçları
+- Mevsimsel patern analizi
+- **Sonuç**: Yıllık verilerde belirgin mevsimsellik gözlemlenmemiştir
+
+#### 5. Durağanlık Analizi
+**H0**: Veri durağan değil (birim kök var)  
+**H1**: Veri durağandır (birim kök yok)
+
+- Augmented Dickey-Fuller (ADF) testi
+- Durağanlık analizi sonuçları
+- **Sonuç**: Veri durağan değildir, trend içermektedir
+
 ### Regresyon Analizi Sonuçları
 
 #### Doğrusal Regresyon

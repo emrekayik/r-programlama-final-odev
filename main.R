@@ -211,6 +211,62 @@ reg_poly <- ggplot(tesdata, aes(x = Year, y = Value)) +
        x = "Yıl", y = "Enerji Arzı",
        caption = paste("RMSE:", round(rmse_poly, 2)))
 
+# ----- 5.2 HİPOTEZ TESTLERİ -----
+
+# Hipotez 1: Türkiye'nin enerji arzı yıllara göre anlamlı bir artış gösteriyor mu?
+# H0: Artış yok (β = 0)
+# H1: Anlamlı artış var (β > 0)
+hipotez1 <- summary(linear_model)
+cat("\nHipotez 1: Enerji Arzında Yıllık Artış\n")
+cat("t-değeri:", hipotez1$coefficients[2,3], "\n")
+cat("p-değeri:", hipotez1$coefficients[2,4], "\n")
+cat("R-kare:", hipotez1$r.squared, "\n")
+
+# Hipotez 2: Enerji arzındaki artış doğrusal mı yoksa polinom mu?
+# H0: Doğrusal model yeterli
+# H1: Polinom model daha iyi
+anova_test <- anova(linear_model, poly_model)
+cat("\nHipotez 2: Model Karşılaştırması (Doğrusal vs Polinom)\n")
+print(anova_test)
+
+# Hipotez 3: Zaman serisinde trend var mı?
+# H0: Trend yok
+# H1: Trend var
+trend_test <- Box.test(ts_tes, lag = 1, type = "Ljung-Box")
+cat("\nHipotez 3: Trend Testi\n")
+print(trend_test)
+
+# Hipotez 4: Mevsimsellik var mı?
+# Yıllık veriler için mevsimsellik testi
+seasonal_test <- friedman.test(matrix(ts_tes, ncol = 1))
+cat("\nHipotez 4: Mevsimsellik Testi\n")
+print(seasonal_test)
+
+# Hipotez 5: Veri durağan mı?
+# H0: Birim kök var (durağan değil)
+# H1: Birim kök yok (durağan)
+adf_test <- adf.test(ts_tes)
+cat("\nHipotez 5: Durağanlık Testi (ADF)\n")
+print(adf_test)
+
+# Sonuçları markdown için özetle
+cat("\nHİPOTEZ TESTLERİ SONUÇLARI:\n")
+cat("1. Yıllık Artış: ", 
+    ifelse(hipotez1$coefficients[2,4] < 0.05, 
+           "Anlamlı artış var", "Anlamlı artış yok"), "\n")
+cat("2. Model Tipi: ",
+    ifelse(anova_test$`Pr(>F)`[2] < 0.05,
+           "Polinom model daha iyi", "Doğrusal model yeterli"), "\n")
+cat("3. Trend: ",
+    ifelse(trend_test$p.value < 0.05,
+           "Anlamlı trend var", "Trend yok"), "\n")
+cat("4. Mevsimsellik: ",
+    ifelse(seasonal_test$p.value < 0.05,
+           "Mevsimsellik var", "Mevsimsellik yok"), "\n")
+cat("5. Durağanlık: ",
+    ifelse(adf_test$p.value < 0.05,
+           "Veri durağan", "Veri durağan değil"), "\n")
+
 # ----- 6. ZAMAN SERİSİ ANALİZİ -----
 
 # 6.1 Türkiye Enerji Arzı Zaman Serisi
