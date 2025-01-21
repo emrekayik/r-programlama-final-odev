@@ -27,7 +27,7 @@ mesdata <- read_excel("datas/MES.xlsx", sheet = 1)
 
 # TES verisini oku
 tesdata <- read_csv("datas/IEA-total_energy_supply_in_turkiye.csv", 
-                   show_col_types = FALSE)
+                    show_col_types = FALSE)
 
 # ----- 3. VERİ KONTROLÜ VE DÜZENLEME -----
 # Veri yapısını kontrol et
@@ -58,7 +58,7 @@ print(mes_karsilastirma)
 
 # 5.1 Ülkeler Arası Karşılaştırma
 uretim_karsilastirma <- ggplot(mes_karsilastirma, 
-       aes(x = reorder(Country, Value), y = Value)) +
+                               aes(x = reorder(Country, Value), y = Value)) +
   geom_bar(stat = "identity", fill = "steelblue", alpha = 0.8) +
   coord_flip() +
   theme_minimal() +
@@ -80,7 +80,7 @@ turkiye_trend <- ggplot(tesdata, aes(x = Year, y = Value)) +
        y = "Enerji Arzı",
        caption = "Kaynak: IEA") +
   scale_x_continuous(breaks = seq(min(tesdata$Year), 
-                                max(tesdata$Year), by = 2)) +
+                                  max(tesdata$Year), by = 2)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 # 5.3 Yakıt Türleri Analizi
@@ -93,7 +93,7 @@ yakit_dagilimi <- mesdata %>%
   filter(Toplam > 0)
 
 yakit_grafik <- ggplot(yakit_dagilimi, 
-       aes(x = reorder(Product, Toplam), y = Toplam, fill = Product)) +
+                       aes(x = reorder(Product, Toplam), y = Toplam, fill = Product)) +
   geom_bar(stat = "identity") +
   coord_flip() +
   theme_minimal() +
@@ -102,6 +102,11 @@ yakit_grafik <- ggplot(yakit_dagilimi,
        y = "Uretim Miktari (GWh)",
        fill = "Yakit Turu") +
   theme(legend.position = "none")
+
+uretim_karsilastirma
+turkiye_trend
+yakit_grafik
+
 
 # ----- 6. GRAFİKLERİ KAYDET -----
 library(svglite)
@@ -159,7 +164,7 @@ dunya_elektrik <- mesdata %>%
 
 # Dünya elektrik üretimi görselleştirme
 dunya_elektrik_grafik <- ggplot(dunya_elektrik, 
-       aes(x = reorder(Country, Toplam_Uretim), y = Toplam_Uretim)) +
+                                aes(x = reorder(Country, Toplam_Uretim), y = Toplam_Uretim)) +
   geom_bar(stat = "identity", fill = "darkblue", alpha = 0.8) +
   coord_flip() +
   theme_minimal() +
@@ -169,6 +174,8 @@ dunya_elektrik_grafik <- ggplot(dunya_elektrik,
        y = "Elektrik Üretimi (GWh)",
        caption = "Kaynak: IEA, 2024") +
   theme(text = element_text(size = 12))
+
+dunya_elektrik
 
 # ----- 5. REGRESYON ANALİZLERİ -----
 
@@ -293,6 +300,7 @@ forecast_plot <- autoplot(forecast_tes) +
   labs(title = "Turkiye Enerji Arzi - 10 Yıllık Tahmin",
        x = "Yıl", y = "Enerji Arzı")
 
+forecast_plot
 # ----- 7. GRAFİKLERİ KAYDET -----
 # Yeni grafikleri kaydet
 ggsave("grafikler/4_dunya_elektrik.svg", 
@@ -317,10 +325,3 @@ cat("GAM Model:", rmse_gam, "\n")
 # ARIMA model sonuçları
 cat("\nARIMA Model Ozeti:\n")
 print(summary(arima_model))
-
-# =================================================================
-# NOT: Bu analiz IEA verilerine dayanmaktadır ve akademik 
-# amaçlarla hazırlanmıştır.
-# ================================================================
-
-
